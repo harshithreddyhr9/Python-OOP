@@ -140,3 +140,123 @@ output:
 {'first': 'Harshith', 'last': 'Reddy', 'pay': 520, 'email': 'Harshith.Reddy@company.com', 'raise_amount': 1.05
 ```
 raise_amount has been added to its namespace. In this way we can assign different raise amount values to different instances without changing the original value of the class varaible. 
+
+# Class Methods
+
+We can define a class method by using a @classmethod (decorator). Classmethods can be used as a constructor. 
+
+```
+@classmethod
+def set_raise_amount(cls, amount):
+    cls.raise_amount = amount
+    
+Employee.set_raise_amount(1.05)
+```
+Now the class variable raise_amount is changed to 1.05. 
+You can use these class methods to create multiple objects. 
+
+# Static methods
+
+We can define a static method by using a @staticmethod (decorator). 
+If you dont access any instance/ class variables then that method is a static method. 
+
+# Subclasses
+
+To inherit a parent class, subclass should have class Employee inside the parenthesis
+```
+class Developer(Employee):
+  pass
+```
+Once an object of a subclass is created, the constructor(*__init__*) of the subclass is called. If not found then
+the *__init__* method of parent class is called. 
+
+You can check the definition of a class by using
+```
+print(help(Developer))
+```
+Method resolution order:
+It is the order of execution of the *__init__* methods.
+* parentclass
+* subclass
+* builtins.object
+parent class inherits from the object class. 
+
+If you want to use the parent class's variables. Employee has first, last, pay and Developer also has first, last, pay and not write redundant code again in the subclass init method. We can use the parent class' varaibles by using super() 
+```python
+class Developer(Employee):
+  def __init__(self, first, last, pay, prog_lang):
+      super().__init__(first,last,pay)
+      self.prog_lang = prog_lang
+
+      or
+      Employee.__init__(self,first,last,pay)
+      
+dev_1 = Developer('Harshith', 'Reddy', 500, 'Python')
+print(dev_1.email)
+print(dev_1.prog_lang)
+```
+The developer class nows inherits the Employee class.
+
+The entire code: 
+
+```python
+class Employee:
+
+    raise_amt = 1.04
+
+    def __init__(self, first, last, pay):
+        self.first = first
+        self.last = last
+        self.email = first + '.' + last + '@email.com'
+        self.pay = pay
+
+    def fullname(self):
+        return '{} {}'.format(self.first, self.last)
+
+    def apply_raise(self):
+        self.pay = int(self.pay * self.raise_amt)
+
+
+# subclass 
+class Developer(Employee):
+    raise_amt = 1.10
+
+    def __init__(self, first, last, pay, prog_lang):
+        super().__init__(first, last, pay)
+        self.prog_lang = prog_lang
+
+#subclass
+class Manager(Employee):
+
+    def __init__(self, first, last, pay, employees=None):
+        super().__init__(first, last, pay)
+        if employees is None:
+            self.employees = []
+        else:
+            self.employees = employees
+
+    def add_emp(self, emp):
+        if emp not in self.employees:
+            self.employees.append(emp) # pass the instance to add to the list of employees.
+
+    def remove_emp(self, emp):
+        if emp in self.employees:
+            self.employees.remove(emp)
+
+    def print_emps(self):
+        for emp in self.employees:
+            print('-->', emp.fullname())
+
+
+dev_1 = Developer('Corey', 'Schafer', 50000, 'Python')
+dev_2 = Developer('Test', 'Employee', 60000, 'Java')
+
+mgr_1 = Manager('Sue', 'Smith', 90000, [dev_1])
+
+print(mgr_1.email)
+
+mgr_1.add_emp(dev_2) # passing the Developer object to add it to the list of employees.
+mgr_1.remove_emp(dev_2)
+
+mgr_1.print_emps()
+```
