@@ -2,20 +2,20 @@
 
 1. Creating classes
 
-``` 
+```python 
 class Employee:
   pass 
 ```
 If you want to leave a class without defining anything, write pass inside it. 
 
 2. Creating instances of a class
-```
+```python
 emp1 = Employee()
 emp2 = Employee()
 ```
 If you print the two objects, you can see that they are two different objects with different locations.
 
-```
+```python
 print(emp1)
 print(emp2)
 ```
@@ -29,7 +29,7 @@ Instance variable contain data which are unique.
 
 3. Creating an init method inside the class.
 
-```
+```python
 class Employee:
   def __init__(self):
 ```
@@ -38,7 +38,7 @@ This is like a constructor. By convention *self* is passed. But you can name it 
 
 Employee example
 
-```
+```python
 class Employee:
   def __init__(self, first, last, email):
       self.first = first
@@ -60,7 +60,7 @@ Harshith.Reddy@company.com
 If we need to print each attribte of the employee then it will be a troublesome. 
 So we can define another method called fullname()
 
-```
+```python
 def fullname(self):
     return '{} {}'.format(self.first, self.last)
 ```
@@ -82,7 +82,7 @@ we pass emp_1 instance because the fullname() does not know which instance to ta
 Class variables can be accessed inside a method using the class name or class instance. Class variables should be same. 
 * Instance varaibles are inside the init method using self. 
 
-```
+```python
 class Employee:
     raise.amount = 1.04
     def __init__(self, first, last, pay): # you can name it anything but it conventially put self"""     self.first = first
@@ -145,7 +145,7 @@ raise_amount has been added to its namespace. In this way we can assign differen
 
 We can define a class method by using a @classmethod (decorator). Classmethods can be used as a constructor. 
 
-```
+```python
 @classmethod
 def set_raise_amount(cls, amount):
     cls.raise_amount = amount
@@ -259,4 +259,144 @@ mgr_1.add_emp(dev_2) # passing the Developer object to add it to the list of emp
 mgr_1.remove_emp(dev_2)
 
 mgr_1.print_emps()
+```
+* isinstance() : To check if an object is an instance of a class
+* issubclass() : To check if class B is a subclass of class A
+
+```python
+print(isinstance(mgr_1, Manager))
+print(issubclass(Developer, Employee))
+```
+return Truee or False
+
+# Special methods
+
+Magic/Dunder init method (__init__)
+
+```python
+def __repr__(self):
+    pass
+    
+def __str__(self):
+    pass
+```
+These two methods are used to print the objects. 
+
+When these two dunder methods were not defined and we printed our object 
+
+```python
+print(emp_1)
+
+output: <__main__.Employee object at 0x052BA050>
+```
+
+If we define the __repr__ method
+```python
+def __repr__(self):
+    return "Employee('{}','{}','{}').format(self.first, self.last, self.pay)
+print(emp_1)
+
+output: Employee('Harshith', 'Reddy', 500)
+```
+
+We can define the __str__ method as well
+
+```python
+def __str__(self):
+    return '{} - {}'.format(self.fullname(), self.email)
+print(emp_1)
+
+output: Harshith Reddy - Harshith.Reddy@email.com
+```
+
+When both the methods are defined and we dont explicitly call __repr__ method then the object will be printed like defined in the __str__ method. 
+
+The commonly used 'dunder' methods are 
+* init
+* repr
+* str
+
+Dunder methods let you emulate the behavior of built-in types. For example, to get the length of a string you can call len('string'). But an empty class definition doesn’t support this behavior out of the box:
+```python
+class NoLenSupport:
+    pass
+
+>>> obj = NoLenSupport()
+>>> len(obj)
+TypeError: "object of type 'NoLenSupport' has no len()"
+```
+
+To fix this, you can add a __len__ dunder method to your class:
+```python
+class LenSupport:
+    def __len__(self):
+        return 42
+
+>>> obj = LenSupport()
+>>> len(obj)
+42
+```
+For clear understanding refer the [documentation](http://www.diveintopython3.net/special-method-names.html)
+
+# Property decorator -Getter, Setters, and Deleters
+
+```python
+class Employee:
+
+    def __init__(self, first, last):
+        self.first = first
+        self.last = last
+
+    @property
+    def email(self):
+        return '{}.{}@email.com'.format(self.first, self.last)
+
+    @property
+    def fullname(self):
+        return '{} {}'.format(self.first, self.last)
+
+
+emp_1 = Employee('John', 'Smith')
+
+print(emp_1.first)
+print(emp_1.email)
+print(emp_1.fullname) # as we have added @property decorator for fullname(). While accessing it we dont need to write the parenthesis. 
+
+```
+If you want to set the fullname, we can use @fullname.setter decorator
+
+```python
+@property
+def fullname(self):
+    return '{} {}'.format(self.first, self.last)
+
+@fullname.setter
+def fullname(self,name):
+    first, last = name.split(' ')
+    self.first = first
+    self.last = last
+    
+emp_1.fullname = 'Lionel Messi' 
+# The full name will be split and stored in first and last so that the first name
+and last name are also updated.
+print(emp_1.first)
+print(emp_1.email)
+print(emp_1.fullname)
+
+output:
+Lionel
+Lionel.Messi@email.come
+Lionel Messi
+```
+
+If you want to delete the fullname, we can use @fullname.deleter decorator
+
+```python
+@fullname.deleter
+def fullname(self):
+    self.first = None
+    self.last = None
+    
+del emp_1.fullname
+
 ```
