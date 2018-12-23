@@ -12,8 +12,18 @@ class myStack:
     
     def size(self):
       return len(self.stackList)
+
+    def push(self,value):
+        self.stackList.append(value)
+        
+    def pop(self):
+      if self.isEmpty():
+        return None
+      return self.stackList.pop()
           
 stack = myStack()
+for i in range(5):
+    stack.push(i)
 print ("isEmpty(): " + str(stack.isEmpty()))
 print ("top() " + str(stack.top()))
 print ("size() " + str(stack.size()))
