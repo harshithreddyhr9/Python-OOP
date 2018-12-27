@@ -1,4 +1,4 @@
-<a href="https://sourcerer.io/harshithreddyhr9"><img src="https://sourcerer.io/icons/logo-sharing.svg"height="48px" alt="Sourcerer"></a>
+
 
 # Python-Overloaded
 1. [Basics of python](https://github.com/harshithreddyhr9/Python-Overloaded/tree/master/Basics) | 2. [OOP concepts](https://github.com/harshithreddyhr9/Python-Overloaded/blob/master/OOPS.md) | 3. [DataStructures](https://github.com/harshithreddyhr9/Python-Overloaded/tree/master/DataStructures) | 4. [Algorithms](https://github.com/harshithreddyhr9/Python-Overloaded/tree/master/Algorithms/Sorting)
